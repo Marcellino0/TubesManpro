@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Pelanggan</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #E8F0FE;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #1A73E8;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            color: #5F6368;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #DADCE0;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            color: #3C4043;
+            background-color: #fff;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #1A73E8;
+            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.1);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .back-button {
+            padding: 0.75rem 1.5rem;
+            background-color: #F1F3F4;
+            color: #3C4043;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            font-weight: 500;
+        }
+
+        .back-button:hover {
+            background-color: #E8EAED;
+        }
+
+        .submit-button {
+            padding: 0.75rem 1.5rem;
+            background-color: #1A73E8;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            font-weight: 500;
+            flex: 1;
+        }
+
+        .submit-button:hover {
+            background-color: #1557B0;
+        }
+
+        .error-message {
+            background-color: #FDE7E9;
+            color: #B31412;
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            border: 1px solid rgba(179, 20, 18, 0.1);
+        }
+
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%235F6368' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .back-button,
+            .submit-button {
+                width: 100%;
+                text-align: center;
+            }
+
+            .back-button {
+                order: 2;
+            }
+
+            .submit-button {
+                order: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Add Pelanggan</h1>
+
+        <form method="POST" action="{{ url_for('add_pelanggan') }}">
+            <div class="form-group">
+                <label for="Nama">Nama:</label>
+                <input type="text" id="Nama" name="Nama" required>
+            </div>
+
+            <div class="form-group">
+                <label for="NomorTelepon">Nomor Telepon:</label>
+                <input type="text" id="NomorTelepon" name="NomorTelepon" required><br>
+            </div>
+
+            <div class="form-group">
+                <label for="Email">Email:</label>
+                <input type="text" id="Email" name="Email" required><br>
+            </div>
+
+            <div class="form-group">
+                <label for="Alamat">Alamat:</label>
+                <input type="text" id="Alamat" name="Alamat" required><br>
+            </div>
+            <div class="form-group">
+                <label for="IDKelurahan">ID Kelurahan:</label>
+                <select id="IDKelurahan" name="IDKelurahan" required>
+                    <option value="">Pilih Kelurahan</option>
+                    <option value="1">Campaka</option>
+                    <option value="2">Ciroyom</option>
+                    <option value="3">Dunguscariang</option>
+                    <option value="4">Garuda</option>
+                    <option value="5">Kebonjeruk</option>
+                    <option value="6">Maleber</option>
+                    <option value="7">Cibadak</option>
+                    <option value="8">Karanganyar</option>
+                    <option value="9">Karasak</option>
+                    <option value="1.0">Nyengseret</option>
+                    <option value="11">Panjunan</option>
+                    <option value="12">Pelindunghewan</option>
+                    <option value="13">Antapani Kidul</option>
+                    <option value="14">Antapani Kulon</option>
+                    <option value="15">Antapani Tengah</option>
+                    <option value="16">Antapani Wetan</option>
+                    <option value="17">Cisaranten Bina Harapan</option>
+                    <option value="18">Cisaranten Endah</option>
+                    <option value="19">Cisaranten Kulon</option>
+                    <option value="20">Sukamiskin</option>
+                    <option value="21">Babakan</option>
+                    <option value="22">Babakanciparay</option>
+                    <option value="23">Cirangrang</option>
+                    <option value="24">Margahayu Utara</option>
+                    <option value="25">Margasuka</option>
+                    <option value="26">Sukahaji</option>
+                    <option value="27">Batununggal</option>
+                    <option value="28">Kujangsari</option>
+                    <option value="29">Mengger</option>
+                    <option value="30">Wates</option>
+                    <option value="31">Caringin</option>
+                    <option value="32">Cibuntu</option>
+                    <option value="33">Cigondewah Kaler</option>
+                    <option value="34">Cigondewah Kidul</option>
+                    <option value="35">Cigondewah Rahayu</option>
+                    <option value="36">Cijerah</option>
+                    <option value="37">Gempolsari</option>
+                    <option value="38">Warungmuncang</option>
+                    <option value="39">Cihapit</option>
+                    <option value="40">Citarum</option>
+                    <option value="41">Tamansari</option>
+                    <option value="42">Binong</option>
+                    <option value="43">Cibangkong</option>
+                    <option value="44">Gumuruh</option>
+                    <option value="45">Kacapiring</option>
+                    <option value="46">Kebongedang</option>
+                    <option value="47">Kebonwaru</option>
+                    <option value="48">Maleer</option>
+                    <option value="49">Samoja</option>
+                    <option value="50">Babakan Asih</option>
+                    <option value="51">Babakan Tarogong</option>
+                    <option value="52">Jamika</option>
+                    <option value="53">Kopo</option>
+                    <option value="54">Suka Asih</option>
+                    <option value="55">Cibaduyut</option>
+                    <option value="56">Cibaduyut Kidul</option>
+                    <option value="57">Cibaduyut Wetan</option>
+                    <option value="58">Kebon Lega</option>
+                    <option value="59">Mekarwangi</option>
+                    <option value="60">Situsaeur</option>
+                    <option value="61">Cijawura</option>
+                    <option value="62">Jatisari</option>
+                    <option value="63">Margasari</option>
+                    <option value="64">Sekejati</option>
+                    <option value="65">Cigadung</option>
+                    <option value="66">Cihaurgeulis</option>
+                    <option value="67">Neglasari</option>
+                    <option value="68">Sukaluyu</option>
+                    <option value="69">Cicadas</option>
+                    <option value="70">Cikutra</option>
+                    <option value="71">Padasuka</option>
+                    <option value="72">Pasirlayung</option>
+                    <option value="73">Sukamaju</option>
+                    <option value="74">Sukapada</option>
+                    <option value="75">Cipadung</option>
+                    <option value="76">Cisurupan</option>
+                    <option value="77">Palasari</option>
+                    <option value="78">Pasirbiru</option>
+                    <option value="79">Arjuna</option>
+                    <option value="80">Husen Sastranegara</option>
+                    <option value="81">Pajajaran</option>
+                    <option value="82">Pamoyanan</option>
+                    <option value="83">Pasirkaliki</option>
+                    <option value="84">Sukaraja</option>
+                    <option value="85">Ciumbuleuit</option>
+                    <option value="86">Hegarmanah</option>
+                    <option value="87">Ledeng</option>
+                    <option value="88">Babakan Penghulu</option>
+                    <option value="89">Cisaranten Wetan</option>
+                    <option value="90">Pakemitan</option>
+                    <option value="91">Sukamulya</option>
+                    <option value="92">Cipaganti</option>
+                    <option value="93">Dago</option>
+                    <option value="94">Lebakgede</option>
+                    <option value="95">Lebaksiliwangi</option>
+                    <option value="96">Sadangserang</option>
+                    <option value="97">Sekeloa</option>
+                    <option value="98">Cimincrang</option>
+                    <option value="99">Cisaranten Kidul</option>
+                    <option value="100">Rancabolang</option>
+                    <option value="101">Rancanumpang</option>
+                    <option value="102">Babakansari</option>
+                    <option value="103">Babakansurabaya</option>
+                    <option value="104">Cicaheum</option>
+                    <option value="105">Kebonkangkung</option>
+                    <option value="106">Kebunjayanti</option>
+                    <option value="107">Sukapura</option>
+                    <option value="108">Burangrang</option>
+                    <option value="109">Cijagra</option>
+                    <option value="110">Cikawao</option>
+                    <option value="111">Lingkar Selatan</option>
+                    <option value="112">Malabar</option>
+                    <option value="113">Paledang</option>
+                    <option value="114">Turangga</option>
+                    <option value="115">Jatihandap</option>
+                    <option value="116">Karangpamulang</option>
+                    <option value="117">Pasir Impun</option>
+                    <option value="118">Sidangjaya</option>
+                    <option value="119">Cipandung Kidul</option>
+                    <option value="120">Cipandung Kulon</option>
+                    <option value="121">Cipandung Wetan</option>
+                    <option value="122">Mekarmulya</option>
+                    <option value="123">Cipamokolan</option>
+                    <option value="124">Darwati</option>
+                    <option value="125">Manjahlega</option>
+                    <option value="126">Mekar Jaya</option>
+                    <option value="127">Ancol</option>
+                    <option value="128">Balonggede</option>
+                    <option value="129">Ciateul</option>
+                    <option value="130">Cigereleng</option>
+                    <option value="131">Ciseureuh</option>
+                    <option value="132">Pasirluyu</option>
+                    <option value="133">Pungkur</option>
+                    <option value="134">Cipedes</option>
+                    <option value="135">Pasteur</option>
+                    <option value="136">Sukabungah</option>
+                    <option value="137">Sukagalih</option>
+                    <option value="138">Sukawarna</option>
+                    <option value="139">Gegerkalong</option>
+                    <option value="140">Isola</option>
+                    <option value="141">Sarijadi</option>
+                    <option value="142">Sukarasa</option>
+                    <option value="143">Babakanciamis</option>
+                    <option value="144">Braga</option>
+                    <option value="145">Kebonpisang</option>
+                    <option value="146">Merdeka</option>
+                    <option value="147">Cigending">Cigending</option>
+                    <option value="148">Pasanggrahan</option>
+                    <option value="149">Pasirendah</option>
+                    <option value="150">Pasirjati</option>
+                    <option value="151">Pasirwangi</option>
+                </select>
+            </div>
+            {% if error %}
+            <div class="error-message">
+                {{ error }}
+            </div>
+            {% endif %}
+            <div class="button-group">
+                <a href="{{ url_for('function_tambah') }}" class="back-button">Back</a>
+                <button type="submit" class="submit-button">Add Pelanggan</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Same scripts as add_pegawai.html
+    </script>
+</body>
+
+</html>

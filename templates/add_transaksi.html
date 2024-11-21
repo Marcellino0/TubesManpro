@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Transaksi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins';
+        }
+
+        body {
+            background-color: #E8F0FE;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .container {
+            background: #FFFFFF;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        h1 {
+            color: #1A73E8;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            color: #3C4043;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #E8EAED;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #1A73E8;
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2);
+        }
+
+        input::placeholder {
+            color: #9AA0A6;
+        }
+
+        .error-message {
+            color: #D93025;
+            background: #FDE7E9;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .back-button, .submit-button {
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-block;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .back-button {
+            background-color: #F1F3F4;
+            color: #3C4043;
+            border: none;
+        }
+
+        .submit-button {
+            background-color: #1A73E8;
+            color: #FFFFFF;
+            border: none;
+        }
+
+        .back-button:hover, .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .container {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Add Transaksi</h1>
+        {% if error %}
+            <div class="error-message">{{ error }}</div>
+        {% endif %}
+        <form method="POST">
+            <div class="form-group">
+                <label for="Tanggal">Tanggal:</label>
+                <input type="date" id="Tanggal" name="Tanggal" required>
+            </div>
+
+            <div class="form-group">
+                <label for="WaktuMulai">Waktu Mulai:</label>
+                <input type="time" id="WaktuMulai" name="WaktuMulai" required>
+            </div>
+
+            <div class="form-group">
+                <label for="WaktuSelesai">Waktu Selesai:</label>
+                <input type="time" id="WaktuSelesai" name="WaktuSelesai" required>
+            </div>
+
+            <div class="form-group">
+                <label for="NamaMesinCuci">Nama Mesin Cuci:</label>
+                <input type="text" id="NamaMesinCuci" name="NamaMesinCuci" required>
+            </div>
+
+            <div class="form-group">
+                <label for="NamaPelanggan">Nama Pelanggan:</label>
+                <input type="text" id="NamaPelanggan" name="NamaPelanggan" required>
+            </div>
+
+            <div class="button-group">
+                <a href="{{ url_for('dashboard') }}" class="back-button">Back</a>
+                <button type="submit" class="submit-button">Tambahkan</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

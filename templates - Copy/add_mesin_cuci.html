@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Mesin Cuci</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        select,
+        input[type="text"],
+        input[type="password"],
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box; /* Untuk memastikan padding dan border tidak menambah lebar */
+        }
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            text-decoration: none;
+            color: #007bff;
+        }
+        .error-message {
+            color: red;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Add Mesin Cuci</h1>
+        <form method="POST" id="formMesinCuci">
+            <label for="NamaMesinCuci">Nama Mesin Cuci:</label>
+            <input type="text" id="NamaMesinCuci" name="NamaMesinCuci" required><br>
+            <label for="Merek">Merek:</label>
+            <select id="Merek" name="Merek" required>
+                <option value="">Pilih Merek</option>
+                <option value="LG">LG</option>
+                <option value="Samsung">Samsung</option>
+                <option value="Sharp">Sharp</option>
+                <option value="Panasonic">Panasonic</option>
+                <option value="Electrolux">Electrolux</option>
+                <option value="Toshiba">Toshiba</option>
+                <option value="Midea">Midea</option>
+                <option value="Beko">Beko</option>
+                <option value="Whirlpool">Whirlpool</option>
+                <option value="Haier">Haier</option>
+            </select><br>
+            <label for="Kapasitas">Kapasitas:</label>
+            <input type="text" id="Kapasitas" name="Kapasitas" required><br>
+            <label for="Status">Status:</label>
+            <select id="Status" name="Status" required>
+                <option value="">Pilih Status</option>
+                <option value="1">Unavailable</option>
+                <option value="0">Available</option>
+            </select><br>
+            <div class="error-message" id="errorMessage"></div> <!-- Pesan kesalahan di sini -->
+            <input type="submit" value="Tambahkan">
+        </form>
+        <a href="{{ url_for('function_tambah') }}">Back</a>
+    </div>
+</body>
+</html>

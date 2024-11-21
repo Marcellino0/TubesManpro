@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Add your CSS link here -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Add your JavaScript code here -->
+    <style>
+
+        /* Styling for error message */
+        .error-message {
+            color: red;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Welcome to Our Laundry Service</h1>
+        </header>
+        <main>
+            <div class="form-container">
+                <h2>Login</h2>
+                <form method="POST" action="{{ url_for('login') }}">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required>
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                    <!-- Error message for incorrect credentials -->
+                    <span class="error-message" id="error-message">{% if error %}Username or password is incorrect.{% endif %}</span>
+                    <input type="submit" value="Login">
+                </form>
+            </div>
+            <div class="customer-view">
+                <h2>Customer View</h2>
+                <a href="{{ url_for('pelanggan') }}" class="btn">View Washing Machines</a>
+            </div>
+        </main>
+    </div>
+    <footer>
+        <p>&copy; Have a nice day, with our service.</p>
+        </div>
+    </div>
+</body>
+</html>
