@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Pegawai</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: 96.4%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            text-decoration: none;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Add Pegawai</h1>
+        <form method="POST">
+            <label for="NamaPegawai">Nama Pegawai:</label>
+            <input type="text" id="NamaPegawai" name="NamaPegawai" required><br>
+            <label for="Username">Username:</label>
+            <input type="text" id="Username" name="Username" required><br>
+            <label for="Password">Password:</label>
+            <input type="text" id="Password" name="Password" required><br>
+            <!-- Menampilkan pesan kesalahan di sini -->
+            {% if error %}
+                <p style="color: red;">{{ error }}</p>
+            {% endif %}
+            <!-- Tombol Tambahkan -->
+            <input type="submit" value="Tambahkan">
+        </form>
+        <a href="{{ url_for('function_tambah') }}">Back</a>
+    </div>
+</body>
+</html>

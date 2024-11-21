@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .dashboard-buttons, .dashboard-links {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        .dashboard-buttons li, .dashboard-links li {
+            margin-bottom: 10px;
+        }
+        .dashboard-buttons li a, .dashboard-links li a {
+            display: block;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .dashboard-buttons li a:hover, .dashboard-links li a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Update</h1>
+        <div class="dashboard-buttons">
+
+            <li><a href="{{ url_for('update_customer') }}">Update Pelanggan</a></li>
+            <li><a href="{{ url_for('update_machine') }}">Update Mesin Cuci</a></li>
+        </div>
+        
+        <div class="dashboard-links">
+            <li><a href="{{ url_for('dashboard') }}">Back</a></li>
+        </div>
+    </div>
+</body>
+</html>
