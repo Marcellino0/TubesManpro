@@ -300,7 +300,7 @@ def update_customer():
                 
         except Exception as e:
             return f"Error: {e}"
-    return render_template("update_pelanggan.html")
+    return render_template("update_pelanggan.html", list_pelanggan = list_pelanggan)
 
 
 @app.route('/update_machine', methods=['GET', 'POST'])
