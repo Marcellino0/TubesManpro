@@ -267,16 +267,16 @@ def add_transaksi():
 @app.route('/update_customer', methods=['GET', 'POST'])
 def update_customer():
     query = """
-        SELECT Nama_Pelanggan, Nomor_Telepon, Email, Alamat, ID_Kelurahan
+        SELECT Nama_Pelanggan, Nomor_Telepon, Email, Alamat, ID_Kelurahan FROM Pelanggan
     """
     cursor.execute(query)
     tabel_pelanggan = cursor.fetchall()
 
     tabel_pelanggan = []
     for detail in tabel_pelanggan:
-        nama_pelanggan, nomor_telepon, email, alamat, kelurahan = detail
+        Nama_Pelanggan, Nomor_Telepon, Email, Alamat, ID_Kelurahan = detail
 
-        tabel_pelanggan.append((nama_pelanggan, nomor_telepon, email, alamat, kelurahan))
+        tabel_pelanggan.append((Nama_Pelanggan, Nomor_Telepon, Email, Alamat, ID_Kelurahan))
 
     if request.method == 'POST':
         try:
@@ -300,7 +300,7 @@ def update_customer():
                 
         except Exception as e:
             return f"Error: {e}"
-    return render_template("update_pelanggan.html", tabel_pelanggan = list_pelanggan)
+    return render_template("update_pelanggan.html", tabel_pelanggan = tabel_pelanggan)
 
 
 @app.route('/update_machine', methods=['GET', 'POST'])
