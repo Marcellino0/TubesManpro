@@ -266,18 +266,15 @@ def add_transaksi():
 
 @app.route('/update_customer', methods=['GET', 'POST'])
 def update_customer():
+    # Execute query to get customer data
     query = """
-        SELECT Nama_Pelanggan, Nomor_Telepon, Email, Alamat, ID_Kelurahan FROM Pelanggan
+        SELECT Nama_Pelanggan, Nomor_Telepon, Email, Alamat, Nama_Kelurahan 
+FROM Pelanggan JOIN Kelurahan ON Pelanggan.ID_Kelurahan = Kelurahan.ID_Kelurahan
     """
     cursor.execute(query)
     tabel_pelanggan = cursor.fetchall()
-
-    tabel_pelanggan = []
-    for detail in tabel_pelanggan:
-        Nama_Pelanggan, Nomor_Telepon, Email, Alamat, ID_Kelurahan = detail
-
-        tabel_pelanggan.append((Nama_Pelanggan, Nomor_Telepon, Email, Alamat, ID_Kelurahan))
-
+    
+    # Process POST request for updates
     if request.method == 'POST':
         try:
             NamaPelanggan = request.form['PelangganLama']
@@ -291,16 +288,17 @@ def update_customer():
             
             if existing_updateCustomer:
                 IDPelanggan = existing_updateCustomer[0]
-                cursor.execute(f"UPDATE Pelanggan SET {column_name} = ? WHERE ID_Pelanggan = ?", (new_value, IDPelanggan))
+                cursor.execute(f"UPDATE Pelanggan SET {column_name} = ?  WHERE ID_Pelanggan = ?", (new_value, IDPelanggan))
                 conn.commit()
                 return redirect(url_for('function_update'))
             else:
                 error = "Nama Pelanggan yang digunakan tidak ada."
-                return render_template('update_pelanggan.html', error=error)
+                return render_template('update_pelanggan.html', error=error, tabel_pelanggan=tabel_pelanggan)
                 
         except Exception as e:
             return f"Error: {e}"
-    return render_template("update_pelanggan.html", tabel_pelanggan = tabel_pelanggan)
+            
+    return render_template("update_pelanggan.html", tabel_pelanggan=tabel_pelanggan)
 
 
 @app.route('/update_machine', methods=['GET', 'POST'])
