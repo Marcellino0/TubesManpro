@@ -266,6 +266,18 @@ def add_transaksi():
 
 @app.route('/update_customer', methods=['GET', 'POST'])
 def update_customer():
+    query = """
+        SELECT Nama_Pelanggan, Nomor_Telepon, Email, Alamat, ID_Kelurahan
+    """
+    cursor.execute(query)
+    tabel_pelanggan = cursor.fetchall()
+
+    list_pelanggan = []
+    for detail in tabel_pelanggan:
+        nama_pelanggan, nomor_telepon, email, alamat, kelurahan
+
+        list_pelanggan.append((nama_pelanggan, nomor_telepon, email, alamat, kelurahan))
+
     if request.method == 'POST':
         try:
             NamaPelanggan = request.form['PelangganLama']
