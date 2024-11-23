@@ -293,19 +293,19 @@ def update_customer():
 
 @app.route('/update_machine', methods=['GET', 'POST'])
 def update_machine():
-    if request.method == 'POST':
-        query = """
+    query = """
         SELECT Nama_Mesin_Cuci, Merek, Tarif, Status FROM MesinCuci
-        """
-        cursor.execute(query)
-        transaction_details = cursor.fetchall()
+    """
+    cursor.execute(query)
+    transaction_details = cursor.fetchall()
     
-        mesin_cuci_list = []
-        for detail in transaction_details:
-            nama_mesin_cuci, merek, tarif, status = detail
+    mesin_cuci_list = []
+    for detail in transaction_details:
+        nama_mesin_cuci, merek, tarif, status = detail
         
-            status_message = "Unavailable" if status == 1 else "Available"
-            mesin_cuci_list.append((nama_mesin_cuci, merek, tarif, status_message))
+        status_message = "Unavailable" if status == 1 else "Available"
+        mesin_cuci_list.append((nama_mesin_cuci, merek, tarif, status_message))
+    if request.method == 'POST':
         try:
             NamaMesinCuci = request.form['MesinCuciLama']
             column_name = request.form['column_name']
