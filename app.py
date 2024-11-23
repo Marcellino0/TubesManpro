@@ -272,11 +272,11 @@ def update_customer():
     cursor.execute(query)
     tabel_pelanggan = cursor.fetchall()
 
-    list_pelanggan = []
+    tabel_pelanggan = []
     for detail in tabel_pelanggan:
         nama_pelanggan, nomor_telepon, email, alamat, kelurahan = detail
 
-        list_pelanggan.append((nama_pelanggan, nomor_telepon, email, alamat, kelurahan))
+        tabel_pelanggan.append((nama_pelanggan, nomor_telepon, email, alamat, kelurahan))
 
     if request.method == 'POST':
         try:
