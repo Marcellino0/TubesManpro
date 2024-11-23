@@ -164,27 +164,27 @@ def add_mesin_cuci():
         Merek = request.form['Merek']
         Kapasitas = request.form['Kapasitas']
         
-        Tarif = 0
-        if Merek == "LG":
-            Tarif = 5000
-        elif Merek == "Samsung":
-            Tarif = 5250
-        elif Merek == "Panasonic":
-            Tarif = 4500
-        elif Merek == "Sharp":
-            Tarif = 3500
-        elif Merek == "Toshiba":
-            Tarif = 3500
-        elif Merek == "Electrolux":
-            Tarif = 7500
-        elif Merek == "Midea":
-            Tarif = 8000
-        elif Merek == "Beko":
-            Tarif = 6000
-        elif Merek == "Whirlpool":
-            Tarif = 5000
-        elif Merek == "Haier":
-            Tarif = 7000
+        Tarif = request.form['Tarif']
+        # if Merek == "LG":
+        #     Tarif = 5000
+        # elif Merek == "Samsung":
+        #     Tarif = 5250
+        # elif Merek == "Panasonic":
+        #     Tarif = 4500
+        # elif Merek == "Sharp":
+        #     Tarif = 3500
+        # elif Merek == "Toshiba":
+        #     Tarif = 3500
+        # elif Merek == "Electrolux":
+        #     Tarif = 7500
+        # elif Merek == "Midea":
+        #     Tarif = 8000
+        # elif Merek == "Beko":
+        #     Tarif = 6000
+        # elif Merek == "Whirlpool":
+        #     Tarif = 5000
+        # elif Merek == "Haier":
+        #     Tarif = 7000
 
         Status = request.form['Status']
         
