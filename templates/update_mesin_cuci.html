@@ -159,6 +159,24 @@
         {% if error %}
             <div class="error-message">{{ error }}</div>
         {% endif %}
+
+        <table>
+            <tr>
+                <th>Nama Mesin Cuci</th>
+                <th>Merek</th>
+                <th>Tarif</th>
+                <th>Status</th>
+            </tr>
+            {% for mesin in mesin_cuci_list %}
+            <tr>
+                <td>{{ mesin[0] }}</td>
+                <td>{{ mesin[1] }}</td>
+                <td>{{ "%.0f" % mesin[2] }}</td>
+                <td>{{ mesin[3] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
         <form action="/update_machine" method="post">
             <div class="form-group">
                 <label for="MesinCuciLama">Nama Mesin Cuci</label>
