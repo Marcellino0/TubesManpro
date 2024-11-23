@@ -266,10 +266,11 @@ def add_transaksi():
 
 @app.route('/update_customer', methods=['GET', 'POST'])
 def update_customer():
-    # Execute query to get customer data
+    # Execute query to get customer data with Kelurahan names
     query = """
         SELECT Nama_Pelanggan, Nomor_Telepon, Email, Alamat, Nama_Kelurahan 
-FROM Pelanggan JOIN Kelurahan ON Pelanggan.ID_Kelurahan = Kelurahan.ID_Kelurahan
+        FROM Pelanggan 
+        JOIN Kelurahan ON Pelanggan.ID_Kelurahan = Kelurahan.ID_Kelurahan
     """
     cursor.execute(query)
     tabel_pelanggan = cursor.fetchall()
@@ -277,27 +278,46 @@ FROM Pelanggan JOIN Kelurahan ON Pelanggan.ID_Kelurahan = Kelurahan.ID_Kelurahan
     # Process POST request for updates
     if request.method == 'POST':
         try:
-            NamaPelanggan = request.form['PelangganLama']
+            nama_pelanggan = request.form['PelangganLama']
             column_name = request.form['column_name']
             new_value = request.form['new_value']
             
-            # Query untuk memeriksa apakah nama pelanggan ada di database
-            check_query = "SELECT ID_Pelanggan FROM Pelanggan WHERE Nama_Pelanggan = ?"
-            cursor.execute(check_query, (NamaPelanggan,))
-            existing_updateCustomer = cursor.fetchone()
-            
-            if existing_updateCustomer:
-                IDPelanggan = existing_updateCustomer[0]
-                cursor.execute(f"UPDATE Pelanggan SET {column_name} = ?  WHERE ID_Pelanggan = ?", (new_value, IDPelanggan))
-                conn.commit()
-                return redirect(url_for('function_update'))
-            else:
-                error = "Nama Pelanggan yang digunakan tidak ada."
-                return render_template('update_pelanggan.html', error=error, tabel_pelanggan=tabel_pelanggan)
+            if column_name == 'ID_Kelurahan':
+                check_kelurahan_query = "SELECT ID_Kelurahan FROM Kelurahan WHERE Nama_Kelurahan = ?"
+                cursor.execute(check_kelurahan_query, (new_value,))
+                kelurahan_result = cursor.fetchone()
                 
-        except Exception as e:
-            return f"Error: {e}"
+                if not kelurahan_result:
+                    insert_kelurahan = "INSERT INTO Kelurahan (Nama_Kelurahan) VALUES (?)"
+                    cursor.execute(insert_kelurahan, (new_value,))
+                    conn.commit()
+                    
+                    cursor.execute(check_kelurahan_query, (new_value,))
+                    kelurahan_result = cursor.fetchone()
+                
+                update_query = """
+                    UPDATE Pelanggan 
+                    SET ID_Kelurahan = ? 
+                    WHERE Nama_Pelanggan = ?
+                """
+                cursor.execute(update_query, (kelurahan_result[0], nama_pelanggan))
+            else:
+                update_query = f"""
+                    UPDATE Pelanggan 
+                    SET {column_name} = ? 
+                    WHERE Nama_Pelanggan = ?
+                """
+                cursor.execute(update_query, (new_value, nama_pelanggan))
             
+            conn.commit()
+            return redirect(url_for('function_update'))
+            
+        except Exception as e:
+            conn.rollback()
+            return render_template('update_pelanggan.html', 
+                                error=f"Error updating data: {str(e)}", 
+                                tabel_pelanggan=tabel_pelanggan)
+    
     return render_template("update_pelanggan.html", tabel_pelanggan=tabel_pelanggan)
 
 
