@@ -133,6 +133,28 @@
             padding-right: 2.5rem;
         }
 
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #1A73E8;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
         @media (max-width: 640px) {
             .container {
                 padding: 1.5rem;
@@ -164,6 +186,27 @@
         {% if error %}
             <p class="error-message">{{ error }}</p>
         {% endif %}
+
+        <table>
+            <tr>
+                <th>Nama Pelanggan</th>
+                <th>Nomor Telepon</th>
+                <th>Email</th>
+                <th>Alamat</th>
+                <th>Kelurahan</th>
+            </tr>
+            {% for pelanggan in list_pelanggan %}
+            <tr>
+                <td>{{ pelanggan[0] }}</td>
+                <td>{{ pelanggan[1] }}</td>
+                <td>{{ pelanggan[2] }}</td>
+                <td>{{ pelanggan[3] }}</td>
+                <td>{{ pelanggan[4] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <br>
+
         <form action="/update_customer" method="post">
             <div class="form-group">
                 <label for="PelangganLama">Nama Pelanggan</label>
@@ -178,7 +221,7 @@
                     <option value="Nomor_Telepon">Nomor Telepon</option>
                     <option value="Email">Email</option>
                     <option value="Alamat">Alamat</option>
-                    <option value="ID_Kelurahan">ID Kelurahan</option>
+                    <option value="Kelurahan">Kelurahan</option>
                 </select>
             </div>
             
