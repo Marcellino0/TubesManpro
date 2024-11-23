@@ -274,7 +274,7 @@ def update_customer():
 
     list_pelanggan = []
     for detail in tabel_pelanggan:
-        nama_pelanggan, nomor_telepon, email, alamat, kelurahan
+        nama_pelanggan, nomor_telepon, email, alamat, kelurahan = detail
 
         list_pelanggan.append((nama_pelanggan, nomor_telepon, email, alamat, kelurahan))
 
