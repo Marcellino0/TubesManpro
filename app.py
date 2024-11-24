@@ -48,7 +48,29 @@ def logout():
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template('dashboard.html')
+    # Fetch real-time data
+    cursor.execute("""
+        SELECT COUNT(*) as total_transactions, 
+               SUM(Total_Biaya) as total_revenue
+        FROM Transaksi
+        WHERE Tanggal_Transaksi = CAST(GETDATE() AS Date)
+    """)
+    today_data = cursor.fetchone()
+
+    cursor.execute("SELECT COUNT(*) FROM Pelanggan")
+    total_customers = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM Transaksi")
+    total_transactions = cursor.fetchone()[0]
+
+    dashboard_data = {
+        'transactions_today': today_data[0] if today_data[0] else 0,
+        'revenue_today': float(today_data[1]) if today_data[1] else 0,
+        'total_customers': total_customers,
+        'total_transactions': total_transactions
+    }
+
+    return render_template('dashboard.html', data=dashboard_data)
 
 @app.route('/function_tambah')
 def function_tambah():

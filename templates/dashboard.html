@@ -254,19 +254,19 @@
             <div class="stats-grid">
                 <div class="stat-card">
                     <h3>Transaksi Hari Ini</h3>
-                    <div class="number">12</div>
+                    <div class="number">{{ data.transactions_today }}</div>
                 </div>
                 <div class="stat-card">
                     <h3>Pendapatan Hari Ini</h3>
-                    <div class="number">Rp 8.5M</div>
+                    <div class="number">Rp {{ "{:,.0f}".format(data.revenue_today) }}</div>
                 </div>
                 <div class="stat-card">
                     <h3>Total Transaksi</h3>
-                    <div class="number">245</div>
+                    <div class="number">{{ data.total_transactions }}</div>
                 </div>
                 <div class="stat-card">
                     <h3>Total Customer</h3>
-                    <div class="number">156</div>
+                    <div class="number">{{ data.total_customers }}</div>
                 </div>
             </div>
 
