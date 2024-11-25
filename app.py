@@ -238,7 +238,14 @@ def add_transaksi():
     cursor.execute(query)
     tabel_pelanggan = cursor.fetchall()
     cursor.execute(query2)
-    tabel_mesincuci = cursor.fetchall()
+    mesin_cuci_list = cursor.fetchall()
+
+    tabel_mesincuci = []
+    for detail in mesin_cuci_list:
+        nama_mesin_cuci, status = detail
+        
+        status_message = "Unavailable" if status == 1 else "Available"
+        tabel_mesincuci.append((nama_mesin_cuci, status_message))
 
     if request.method == 'POST':
         Tanggal = request.form['Tanggal']
