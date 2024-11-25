@@ -378,6 +378,7 @@ def update_machine():
         
         status_message = "Unavailable" if status == 1 else "Available"
         mesin_cuci_list.append((nama_mesin_cuci, merek, tarif, status_message))
+    
     if request.method == 'POST':
         try:
             NamaMesinCuci = request.form['MesinCuciLama']
@@ -391,6 +392,11 @@ def update_machine():
             
             if existing_updateMachine:
                 IDMesinCuci = existing_updateMachine[0]
+                
+                # Convert status string to integer for database storage
+                if column_name == 'Status':
+                    new_value = 1 if new_value.lower() == 'unavailable' else 0
+                
                 cursor.execute(f"UPDATE MesinCuci SET {column_name} = ? WHERE ID_Mesin_Cuci = ?", (new_value, IDMesinCuci))
                 conn.commit()
                 return redirect(url_for('function_update'))
