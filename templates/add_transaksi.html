@@ -111,6 +111,28 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #1A73E8;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
         @media (max-width: 768px) {
             body {
                 padding: 1rem;
@@ -132,6 +154,31 @@
         {% if error %}
             <div class="error-message">{{ error }}</div>
         {% endif %}
+
+        <table>
+            <tr>
+                <th>Nama Pelanggan</th>
+            </tr>
+            {% for pelanggan in tabel_pelanggan %}
+            <tr>
+                <td>{{ pelanggan[0] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <table>
+            <tr>
+                <th>Nama Mesin Cuci</th>
+                <th>Status</th>
+            </tr>
+            {% for mesin in tabel_mesincuci %}
+            <tr>
+                <td>{{ mesin[0] }}</td>
+                <td>{{ mesin[1] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
         <form method="POST">
             <div class="form-group">
                 <label for="Tanggal">Tanggal:</label>

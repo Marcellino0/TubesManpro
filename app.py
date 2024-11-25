@@ -225,6 +225,28 @@ def add_mesin_cuci():
 
 @app.route('/add_transaksi', methods=['GET', 'POST'])
 def add_transaksi():
+
+    query = """
+        SELECT Nama_Pelanggan
+        FROM Pelanggan 
+    """
+    query2 = """
+        SELECT Nama_Mesin_Cuci, Status
+        FROM MesinCuci
+    """
+    
+    cursor.execute(query)
+    tabel_pelanggan = cursor.fetchall()
+    cursor.execute(query2)
+    mesin_cuci_list = cursor.fetchall()
+
+    tabel_mesincuci = []
+    for detail in mesin_cuci_list:
+        nama_mesin_cuci, status = detail
+        
+        status_message = "Unavailable" if status == 1 else "Available"
+        tabel_mesincuci.append((nama_mesin_cuci, status_message))
+
     if request.method == 'POST':
         Tanggal = request.form['Tanggal']
         WaktuMulai = request.form['WaktuMulai']
@@ -282,7 +304,7 @@ def add_transaksi():
             error = "Nama Mesin Cuci tidak valid."
             return render_template('add_transaksi.html', error=error)
 
-    return render_template('add_transaksi.html')
+    return render_template('add_transaksi.html', tabel_pelanggan=tabel_pelanggan, tabel_mesincuci=tabel_mesincuci)
 
 
 
