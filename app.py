@@ -225,28 +225,26 @@ def add_mesin_cuci():
 
 @app.route('/add_transaksi', methods=['GET', 'POST'])
 def add_transaksi():
+    #    query = """
+    #     SELECT Nama_Pelanggan
+    #     FROM Pelanggan 
+    # """
+    # query2 = """
+    #     SELECT Nama_Mesin_Cuci, Status
+    #     FROM MesinCuci
+    # """
 
-    query = """
-        SELECT Nama_Pelanggan
-        FROM Pelanggan 
-    """
-    query2 = """
-        SELECT Nama_Mesin_Cuci, Status
-        FROM MesinCuci
-    """
-    
-    cursor.execute(query)
-    tabel_pelanggan = cursor.fetchall()
-    cursor.execute(query2)
-    mesin_cuci_list = cursor.fetchall()
+    # cursor.execute(query)
+    # tabel_pelanggan = cursor.fetchall()
+    # cursor.execute(query2)
+    # mesin_cuci_list = cursor.fetchall()
 
-    tabel_mesincuci = []
-    for detail in mesin_cuci_list:
-        nama_mesin_cuci, status = detail
-        
-        status_message = "Unavailable" if status == 1 else "Available"
-        tabel_mesincuci.append((nama_mesin_cuci, status_message))
+    # tabel_mesincuci = []
+    # for detail in mesin_cuci_list:
+    #     nama_mesin_cuci, status = detail
 
+    #     status_message = "Unavailable" if status == 1 else "Available"
+    #     tabel_mesincuci.append((nama_mesin_cuci, status_message))
     if request.method == 'POST':
         Tanggal = request.form['Tanggal']
         WaktuMulai = request.form['WaktuMulai']
@@ -258,8 +256,6 @@ def add_transaksi():
         cursor.execute("SELECT ID_Mesin_Cuci, Tarif, Status FROM MesinCuci WHERE Nama_Mesin_Cuci = ?", (NamaMesinCuci,))
         result = cursor.fetchone()
         if result:
-            # Mengambil status dari tabel MesinCuci
-            
             IDMesinCuci, Tarif, status_mesin = result
             Tarifs = float(Tarif)
             if status_mesin == 0:  # Jika status mesin adalah 0 (tidak digunakan)
@@ -274,10 +270,15 @@ def add_transaksi():
                         WaktuMulai_dt = datetime.strptime(WaktuMulai, time_format)
                         WaktuSelesai_dt = datetime.strptime(WaktuSelesai, time_format)
                         time_diff = (WaktuSelesai_dt - WaktuMulai_dt).total_seconds() / 60
+                        
+                        if time_diff <= 0:
+                            error = "Waktu invalid."
+                            return render_template('add_transaksi.html', error=error)
                         TotalBiaya = Tarifs * (time_diff / 15)
                         TotalBiayas = int(TotalBiaya)
-                    except Exception as e:
-                        return str(e)
+                    except ValueError:
+                        error = "Format waktu tidak valid."
+                        return render_template('add_transaksi.html', error=error)
 
                     # Memasukkan transaksi ke dalam database
                     insert_statement = """
@@ -304,9 +305,7 @@ def add_transaksi():
             error = "Nama Mesin Cuci tidak valid."
             return render_template('add_transaksi.html', error=error)
 
-    return render_template('add_transaksi.html', tabel_pelanggan=tabel_pelanggan, tabel_mesincuci=tabel_mesincuci)
-
-
+    return render_template('add_transaksi.html')
 
 @app.route('/update_customer', methods=['GET', 'POST'])
 def update_customer():
