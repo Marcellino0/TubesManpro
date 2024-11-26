@@ -1,15 +1,11 @@
-#6182101021 - 6182101032 - MIBD B
 import sys
 import pyodbc as odbc
-
-DRIVER_NAME = 'SQL SERVER'
-SERVER_NAME = 'DESKTOP-H14LBAC\SQLEXPRESS'
-DATABASE_NAME ='ProjectMIBD'
+import config
 
 conn_string = f"""
-    Driver={{{DRIVER_NAME}}};
-    Server={SERVER_NAME};
-    Database={DATABASE_NAME};
+    Driver={{{config.DRIVER_NAME}}};
+    Server={config.SERVER_NAME};
+    Database={config.DATABASE_NAME};
     Trust_Connection=yes;
 """
 
