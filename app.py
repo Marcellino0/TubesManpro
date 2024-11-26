@@ -363,12 +363,19 @@ def update_customer():
 
 @app.route('/update_machine', methods=['GET', 'POST'])
 def update_machine():
-    query = """
+    # Query to get all washing machine names for the dropdown
+    query_machines = """
+        SELECT Nama_Mesin_Cuci FROM MesinCuci
+    """
+    cursor.execute(query_machines)
+    mesin_cuci_list = cursor.fetchall()
+    
+    # Query to get all details for display
+    query_details = """
         SELECT Nama_Mesin_Cuci, Merek, Tarif, Status FROM MesinCuci
     """
-    cursor.execute(query)
+    cursor.execute(query_details)
     transaction_details = cursor.fetchall()
-    
     
     if request.method == 'POST':
         try:
@@ -376,7 +383,7 @@ def update_machine():
             column_name = request.form['column_name']
             new_value = request.form['new_value']
             
-            # Query untuk memeriksa apakah nama mesin cuci ada di database
+            # Query to check if washing machine exists in database
             check_query = "SELECT ID_Mesin_Cuci FROM MesinCuci WHERE Nama_Mesin_Cuci = ?"
             cursor.execute(check_query, (NamaMesinCuci,))
             existing_updateMachine = cursor.fetchone()
@@ -388,16 +395,26 @@ def update_machine():
                 if column_name == 'Status':
                     new_value = 1 if new_value.lower() == 'unavailable' else 0
                 
-                cursor.execute(f"UPDATE MesinCuci SET {column_name} = ? WHERE ID_Mesin_Cuci = ?", (new_value, IDMesinCuci))
+                update_query = f"UPDATE MesinCuci SET {column_name} = ? WHERE ID_Mesin_Cuci = ?"
+                cursor.execute(update_query, (new_value, IDMesinCuci))
                 conn.commit()
                 return redirect(url_for('function_update'))
             else:
                 error = "Nama Mesin Cuci yang digunakan tidak terdaftar."
-                return render_template('update_mesin_cuci.html', error=error)
+                return render_template('update_mesin_cuci.html', 
+                                    error=error,
+                                    mesin_cuci_list=mesin_cuci_list,
+                                    transaction_details=transaction_details)
         except Exception as e:
-            return f"Error: {e}"
+            error = f"Error: {str(e)}"
+            return render_template('update_mesin_cuci.html', 
+                                error=error,
+                                mesin_cuci_list=mesin_cuci_list,
+                                transaction_details=transaction_details)
             
-    return render_template("update_mesin_cuci.html", transaction_details=transaction_details)
+    return render_template("update_mesin_cuci.html",
+                         mesin_cuci_list=mesin_cuci_list,
+                         transaction_details=transaction_details)
 
 
 if __name__ == '__main__':
