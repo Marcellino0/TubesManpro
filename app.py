@@ -368,23 +368,30 @@ def update_customer():
 
 @app.route('/update_machine', methods=['GET', 'POST'])
 def update_machine():
-    # Query to get all washing machine names for the dropdown
-    query_machines = """
-        SELECT Nama_Mesin_Cuci FROM MesinCuci
-    """
-    cursor.execute(query_machines)
-    mesin_cuci_list = cursor.fetchall()
+    try:
+        query_machines = """
+            SELECT Nama_Mesin_Cuci FROM MesinCuci
+        """
     
-    # Query to get all details for display
-    query_details = """
-        SELECT Nama_Mesin_Cuci, Merek, Tarif, Status FROM MesinCuci
-    """
-    cursor.execute(query_details)
-    transaction_details = cursor.fetchall()
-    
+        try:
+            cursor.execute(query_machines)
+            tabel_mesincuci = cursor.fetchall()
+            
+            # Debug: Print jumlah mesin cuci yang ditemukan
+            print(f"Jumlah Mesin Cuci: {len(tabel_mesincuci)}")
+            print("Daftar Mesin Cuci:", tabel_mesincuci)
+        except Exception as query_error:
+            print(f"Query Error: {query_error}")
+            tabel_mesincuci = []
+
+    # Ubah struktur try-except untuk menangkap semua kemungkinan error
+    except Exception as e:
+        print(f"General Error: {e}")
+        tabel_mesincuci = []
+
     if request.method == 'POST':
         try:
-            NamaMesinCuci = request.form['MesinCuciLama']
+            NamaMesinCuci = request.form['NamaMesinCuci']
             column_name = request.form['column_name']
             new_value = request.form['new_value']
             
@@ -408,19 +415,15 @@ def update_machine():
                 error = "Nama Mesin Cuci yang digunakan tidak terdaftar."
                 return render_template('update_mesin_cuci.html', 
                                     error=error,
-                                    mesin_cuci_list=mesin_cuci_list,
-                                    transaction_details=transaction_details)
+                                    tabel_mesincuci=tabel_mesincuci)
         except Exception as e:
             error = f"Error: {str(e)}"
             return render_template('update_mesin_cuci.html', 
                                 error=error,
-                                mesin_cuci_list=mesin_cuci_list,
-                                transaction_details=transaction_details)
-            
+                                tabel_mesincuci=tabel_mesincuci)
+    
     return render_template("update_mesin_cuci.html",
-                         mesin_cuci_list=mesin_cuci_list,
-                         transaction_details=transaction_details)
-
+                         tabel_mesincuci=tabel_mesincuci)
 
 if __name__ == '__main__':
     app.run(debug=True)
