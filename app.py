@@ -308,9 +308,8 @@ def add_transaksi():
 def update_customer():
     # Execute query to get customer data with Kelurahan names
     query = """
-        SELECT Nama_Pelanggan, Nomor_Telepon, Email, Alamat, Nama_Kelurahan 
-        FROM Pelanggan 
-        JOIN Kelurahan ON Pelanggan.ID_Kelurahan = Kelurahan.ID_Kelurahan
+        SELECT Nama_Pelanggan
+        FROM Pelanggan
     """
     cursor.execute(query)
     tabel_pelanggan = cursor.fetchall()
@@ -364,7 +363,7 @@ def update_customer():
 @app.route('/update_machine', methods=['GET', 'POST'])
 def update_machine():
     query = """
-        SELECT Nama_Mesin_Cuci, Merek, Tarif, Status FROM MesinCuci
+        SELECT Nama_Mesin_Cuci FROM MesinCuci
     """
     cursor.execute(query)
     transaction_details = cursor.fetchall()
