@@ -188,6 +188,12 @@
         </table> -->
 
         <form method="POST">
+
+            <div class="form-group">
+                <label for="NamaPelanggan">Nama Pelanggan:</label>
+                <input type="text" id="NamaPelanggan" name="NamaPelanggan" required>
+            </div>
+
             <div class="form-group">
                 <label for="Tanggal">Tanggal:</label>
                 <input type="date" id="Tanggal" name="Tanggal" required>
@@ -208,16 +214,74 @@
                 <input type="text" id="NamaMesinCuci" name="NamaMesinCuci" required>
             </div>
 
-            <div class="form-group">
-                <label for="NamaPelanggan">Nama Pelanggan:</label>
-                <input type="text" id="NamaPelanggan" name="NamaPelanggan" required>
-            </div>
-
             <div class="button-group">
                 <a href="{{ url_for('dashboard') }}" class="back-button">Back</a>
                 <button type="submit" class="submit-button">Tambahkan</button>
             </div>
         </form>
     </div>
+
+    <script>
+        // Customer data from Flask template
+        const customers = [
+            {% for pelanggan in tabel_pelanggan %}
+            {
+                name: "{{ pelanggan[0] }}",
+            },
+            {% endfor %}
+        ];
+
+        const input = document.getElementById('PelangganLama');
+        const dropdown = document.getElementById('customerDropdown');
+        const customerDetails = document.getElementById('customerDetails');
+
+        function updateCustomerDetails(customer) {
+            document.getElementById('phoneDetails').textContent = customer.phone;
+            document.getElementById('emailDetails').textContent = customer.email;
+            document.getElementById('addressDetails').textContent = customer.address;
+            document.getElementById('kelurahanDetails').textContent = customer.kelurahan;
+            customerDetails.classList.add('show');
+        }
+
+        function filterCustomers(searchTerm) {
+            return customers.filter(customer => 
+                customer.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        }
+
+        function showDropdown(filteredCustomers) {
+            dropdown.innerHTML = '';
+            filteredCustomers.forEach(customer => {
+                const div = document.createElement('div');
+                div.className = 'dropdown-item';
+                div.textContent = customer.name;
+                div.addEventListener('click', () => {
+                    input.value = customer.name;
+                    dropdown.classList.remove('show');
+                    updateCustomerDetails(customer);
+                });
+                dropdown.appendChild(div);
+            });
+            dropdown.classList.add('show');
+        }
+
+        input.addEventListener('input', (e) => {
+            const searchTerm = e.target.value;
+            if (searchTerm.length > 0) {
+                const filteredCustomers = filterCustomers(searchTerm);
+                showDropdown(filteredCustomers);
+            } else {
+                dropdown.classList.remove('show');
+                customerDetails.classList.remove('show');
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+    </script>
+
 </body>
 </html>

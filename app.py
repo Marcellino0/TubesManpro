@@ -222,17 +222,17 @@ def add_mesin_cuci():
 
 @app.route('/add_transaksi', methods=['GET', 'POST'])
 def add_transaksi():
-    #    query = """
-    #     SELECT Nama_Pelanggan
-    #     FROM Pelanggan 
-    # """
+    query = """
+        SELECT Nama_Pelanggan
+        FROM Pelanggan 
+    """
     # query2 = """
     #     SELECT Nama_Mesin_Cuci, Status
     #     FROM MesinCuci
     # """
 
-    # cursor.execute(query)
-    # tabel_pelanggan = cursor.fetchall()
+    cursor.execute(query)
+    tabel_pelanggan = cursor.fetchall()
     # cursor.execute(query2)
     # mesin_cuci_list = cursor.fetchall()
 
@@ -302,7 +302,7 @@ def add_transaksi():
             error = "Nama Mesin Cuci tidak valid."
             return render_template('add_transaksi.html', error=error)
 
-    return render_template('add_transaksi.html')
+    return render_template('add_transaksi.html',tabel_pelanggan=tabel_pelanggan)
 
 @app.route('/update_customer', methods=['GET', 'POST'])
 def update_customer():
