@@ -100,21 +100,40 @@ def pelanggan():
 
 @app.route('/laporan_Transaksi', methods=['GET'])
 def laporan_Transaksi():
+    start_date = request.args.get('start_date')
+    end_date = request.args.get('end_date')
+
     query = """
-            SELECT Pelanggan.Nama_Pelanggan, MesinCuci.Nama_Mesin_Cuci, Transaksi.Tanggal_Transaksi, SUM(Transaksi.Total_Biaya) 
-            FROM Pelanggan JOIN Transaksi ON Pelanggan.ID_Pelanggan = Transaksi.ID_Pelanggan
-            JOIN MesinCuci ON Transaksi.ID_Mesin_Cuci = MesinCuci.ID_Mesin_Cuci
-            GROUP BY Transaksi.Tanggal_Transaksi, Pelanggan.Nama_Pelanggan, MesinCuci.Nama_Mesin_Cuci
-        """
-    cursor.execute(query)
+        SELECT Pelanggan.Nama_Pelanggan, MesinCuci.Nama_Mesin_Cuci, Transaksi.Tanggal_Transaksi, Transaksi.Total_Biaya
+        FROM Pelanggan
+        JOIN Transaksi ON Pelanggan.ID_Pelanggan = Transaksi.ID_Pelanggan
+        JOIN MesinCuci ON Transaksi.ID_Mesin_Cuci = MesinCuci.ID_Mesin_Cuci
+    """
+    params = ()
+    if start_date and end_date:
+        query += " WHERE Transaksi.Tanggal_Transaksi BETWEEN ? AND ?"
+        params = (start_date, end_date)
+
+    cursor.execute(query, params)
     list_laporan = cursor.fetchall()
-        
+
+    total_penghasilan = sum(detail[3] for detail in list_laporan)
+
     list_Laporan = []
     for detail in list_laporan:
         nama_pelanggan, nama_mesin_cuci, tanggal_transaksi, total_biaya = detail
         list_Laporan.append((nama_pelanggan, nama_mesin_cuci, tanggal_transaksi, total_biaya))
-        
-    return render_template('functionLaporan.html', list_laporan=list_Laporan)
+    
+    return render_template(
+        'functionLaporan.html', 
+        list_laporan=list_Laporan, 
+        total_penghasilan=total_penghasilan,
+        start_date=start_date,
+        end_date=end_date
+    )
+
+
+
 
 @app.route('/add_pegawai', methods=['GET', 'POST'])
 def add_pegawai():

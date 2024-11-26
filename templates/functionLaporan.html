@@ -18,42 +18,76 @@
         }
 
         .container {
-            position: relative;
             padding: 2rem;
-            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        .glass-effect {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            z-index: 0;
-        }
-
         h1 {
             color: #1A73E8;
             font-size: 2rem;
-            margin-bottom: 2rem;
-            position: relative;
-            z-index: 1;
+            margin-bottom: 1.5rem;
             text-align: center;
         }
 
+        .form-container {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-container form {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        label {
+            font-weight: 500;
+            color: #333;
+        }
+
+        input[type="date"] {
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button[type="submit"] {
+            background-color: #1A73E8;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #135CA8;
+        }
+
+        .reset-button {
+            background-color: #FF6B6B;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        .reset-button:hover {
+            background-color: #D9534F;
+        }
+
         .table-container {
-            background: #FFFFFF;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 1000px;
-            position: relative;
-            z-index: 1;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
 
@@ -62,23 +96,25 @@
             border-collapse: collapse;
         }
 
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #E8EAED;
+        }
+
         th {
             background-color: #F8F9FA;
             color: #1A73E8;
-            font-weight: 600;
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 2px solid #E8EAED;
-        }
-
-        td {
-            padding: 1rem;
-            border-bottom: 1px solid #E8EAED;
-            color: #3C4043;
         }
 
         tr:hover {
             background-color: #F8F9FA;
+        }
+
+        .total-container {
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            color: #333;
         }
 
         .back-button {
@@ -90,44 +126,37 @@
             border-radius: 12px;
             font-weight: 500;
             transition: all 0.3s ease;
-            position: relative;
-            z-index: 1;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .back-button:hover {
             background-color: #1A73E8;
-            color: #FFFFFF;
+            color: white;
             transform: translateY(-3px);
-            box-shadow: 0 8px 15px rgba(26, 115, 232, 0.2);
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-
-            h1 {
-                font-size: 1.5rem;
-            }
-
-            .table-container {
-                overflow-x: auto;
-            }
-
-            th, td {
-                padding: 0.75rem;
-                font-size: 0.9rem;
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="glass-effect"></div>
-        
         <h1>Laporan Transaksi</h1>
-        
+
+        <!-- Form Filter dan Reset -->
+        <div class="form-container">
+            <form method="GET" action="{{ url_for('laporan_Transaksi') }}">
+                <label for="start_date">Tanggal Awal:</label>
+                <input type="date" id="start_date" name="start_date" value="{{ start_date }}" required>
+                
+                <label for="end_date">Tanggal Akhir:</label>
+                <input type="date" id="end_date" name="end_date" value="{{ end_date }}" required>
+                
+                <button type="submit">Filter</button>
+            </form>
+            <form method="GET" action="{{ url_for('laporan_Transaksi') }}">
+                <button type="submit" class="reset-button">Reset Filter</button>
+            </form>
+        </div>
+
+        <!-- Tabel Data -->
         <div class="table-container">
             <table>
                 <thead>
@@ -150,7 +179,13 @@
                 </tbody>
             </table>
         </div>
-        
+
+        <!-- Total Penghasilan -->
+        <div class="total-container">
+            <p>Total Penghasilan: Rp {{ "%.0f"|format(total_penghasilan) }}</p>
+        </div>
+
+        <!-- Tombol Back to Dashboard -->
         <a href="{{ url_for('dashboard') }}" class="back-button">Back to Dashboard</a>
     </div>
 </body>
