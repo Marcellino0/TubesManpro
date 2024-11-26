@@ -308,8 +308,9 @@ def add_transaksi():
 def update_customer():
     # Execute query to get customer data with Kelurahan names
     query = """
-        SELECT Nama_Pelanggan
-        FROM Pelanggan
+        SELECT Nama_Pelanggan, Nomor_Telepon, Email, Alamat, Nama_Kelurahan 
+        FROM Pelanggan 
+        JOIN Kelurahan ON Pelanggan.ID_Kelurahan = Kelurahan.ID_Kelurahan
     """
     cursor.execute(query)
     tabel_pelanggan = cursor.fetchall()
@@ -363,17 +364,11 @@ def update_customer():
 @app.route('/update_machine', methods=['GET', 'POST'])
 def update_machine():
     query = """
-        SELECT Nama_Mesin_Cuci FROM MesinCuci
+        SELECT Nama_Mesin_Cuci, Merek, Tarif, Status FROM MesinCuci
     """
     cursor.execute(query)
     transaction_details = cursor.fetchall()
     
-    mesin_cuci_list = []
-    for detail in transaction_details:
-        nama_mesin_cuci, merek, tarif, status = detail
-        
-        status_message = "Unavailable" if status == 1 else "Available"
-        mesin_cuci_list.append((nama_mesin_cuci, merek, tarif, status_message))
     
     if request.method == 'POST':
         try:
@@ -402,7 +397,7 @@ def update_machine():
         except Exception as e:
             return f"Error: {e}"
             
-    return render_template("update_mesin_cuci.html", mesin_cuci_list=mesin_cuci_list)
+    return render_template("update_mesin_cuci.html", transaction_details=transaction_details)
 
 
 if __name__ == '__main__':
