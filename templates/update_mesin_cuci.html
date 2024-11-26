@@ -39,6 +39,7 @@
 
         .form-group {
             margin-bottom: 1.25rem;
+            position: relative;
         }
 
         .form-group label {
@@ -128,26 +129,34 @@
             padding-right: 2.5rem;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+        /* Dropdown styles */
+        .dropdown-list {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #DADCE0;
+            border-radius: 0 0 8px 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        table, th, td {
-            border: 1px solid #ddd;
+
+        .dropdown-list.show {
+            display: block;
         }
-        th, td {
-            padding: 12px;
-            text-align: left;
+
+        .dropdown-item {
+            padding: 0.75rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
         }
-        th {
-            background-color: #1A73E8;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        tr:hover {
-            background-color: #f1f1f1;
+
+        .dropdown-item:hover {
+            background-color: #F1F3F4;
         }
 
         @media (max-width: 640px) {
@@ -181,29 +190,12 @@
         {% if error %}
             <div class="error-message">{{ error }}</div>
         {% endif %}
-
-        <!-- <table>
-            <tr>
-                <th>Nama Mesin Cuci</th>
-                <th>Merek</th>
-                <th>Tarif</th>
-                <th>Status</th>
-            </tr>
-            {% for mesin in mesin_cuci_list %}
-            <tr>
-                <td>{{ mesin[0] }}</td>
-                <td>{{ mesin[1] }}</td>
-                <td>{{ "%.0f" % mesin[2] }}</td>
-                <td>{{ mesin[3] }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-        <br> -->
         
         <form action="/update_machine" method="post">
             <div class="form-group">
                 <label for="MesinCuciLama">Nama Mesin Cuci</label>
-                <input type="text" id="MesinCuciLama" name="MesinCuciLama" required>
+                <input type="text" id="MesinCuciLama" name="MesinCuciLama" required autocomplete="off">
+                <div class="dropdown-list" id="machineDropdown"></div>
             </div>
 
             <div class="form-group">
@@ -229,5 +221,56 @@
             </div>
         </form>
     </div>
+
+    <script>
+        // Washing machine data from Flask template
+        const machines = [
+            {% for mesin in mesin_cuci_list %}
+            {
+                name: "{{ mesin[0] }}"
+            },
+            {% endfor %}
+        ];
+
+        const input = document.getElementById('MesinCuciLama');
+        const dropdown = document.getElementById('machineDropdown');
+
+        function filterMachines(searchTerm) {
+            return machines.filter(machine => 
+                machine.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        }
+
+        function showDropdown(filteredMachines) {
+            dropdown.innerHTML = '';
+            filteredMachines.forEach(machine => {
+                const div = document.createElement('div');
+                div.className = 'dropdown-item';
+                div.textContent = machine.name;
+                div.addEventListener('click', () => {
+                    input.value = machine.name;
+                    dropdown.classList.remove('show');
+                });
+                dropdown.appendChild(div);
+            });
+            dropdown.classList.add('show');
+        }
+
+        input.addEventListener('input', (e) => {
+            const searchTerm = e.target.value;
+            if (searchTerm.length > 0) {
+                const filteredMachines = filterMachines(searchTerm);
+                showDropdown(filteredMachines);
+            } else {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+    </script>
 </body>
 </html>
