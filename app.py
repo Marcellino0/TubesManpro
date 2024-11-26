@@ -222,26 +222,31 @@ def add_mesin_cuci():
 
 @app.route('/add_transaksi', methods=['GET', 'POST'])
 def add_transaksi():
-    query = """
+    # Query untuk mengambil daftar pelanggan
+    query_pelanggan = """
         SELECT Nama_Pelanggan
         FROM Pelanggan 
     """
-    # query2 = """
-    #     SELECT Nama_Mesin_Cuci, Status
-    #     FROM MesinCuci
-    # """
+    
+    # Query untuk mengambil daftar mesin cuci
+    query_mesincuci = """
+        SELECT Nama_Mesin_Cuci, Status
+        FROM MesinCuci
+    """
 
-    cursor.execute(query)
+    cursor.execute(query_pelanggan)
     tabel_pelanggan = cursor.fetchall()
-    # cursor.execute(query2)
-    # mesin_cuci_list = cursor.fetchall()
+    
+    cursor.execute(query_mesincuci)
+    mesin_cuci_list = cursor.fetchall()
 
-    # tabel_mesincuci = []
-    # for detail in mesin_cuci_list:
-    #     nama_mesin_cuci, status = detail
+    # Konversi status mesin cuci ke format yang lebih mudah dibaca
+    tabel_mesincuci = []
+    for detail in mesin_cuci_list:
+        nama_mesin_cuci, status = detail
+        status_message = "Unavailable" if status == 1 else "Available"
+        tabel_mesincuci.append((nama_mesin_cuci, status_message))
 
-    #     status_message = "Unavailable" if status == 1 else "Available"
-    #     tabel_mesincuci.append((nama_mesin_cuci, status_message))
     if request.method == 'POST':
         Tanggal = request.form['Tanggal']
         WaktuMulai = request.form['WaktuMulai']
@@ -270,12 +275,12 @@ def add_transaksi():
                         
                         if time_diff <= 0:
                             error = "Waktu invalid."
-                            return render_template('add_transaksi.html', error=error)
+                            return render_template('add_transaksi.html', error=error, tabel_pelanggan=tabel_pelanggan, tabel_mesincuci=tabel_mesincuci)
                         TotalBiaya = Tarifs * (time_diff / 15)
                         TotalBiayas = int(TotalBiaya)
                     except ValueError:
                         error = "Format waktu tidak valid."
-                        return render_template('add_transaksi.html', error=error)
+                        return render_template('add_transaksi.html', error=error, tabel_pelanggan=tabel_pelanggan, tabel_mesincuci=tabel_mesincuci)
 
                     # Memasukkan transaksi ke dalam database
                     insert_statement = """
@@ -294,15 +299,15 @@ def add_transaksi():
                         return str(e)
                 else:
                     error = "Nama Pelanggan tidak terdaftar."
-                    return render_template('add_transaksi.html', error=error)
+                    return render_template('add_transaksi.html', error=error, tabel_pelanggan=tabel_pelanggan, tabel_mesincuci=tabel_mesincuci)
             else:
                 error = "Mesin cuci sedang digunakan."
-                return render_template('add_transaksi.html', error=error)
+                return render_template('add_transaksi.html', error=error, tabel_pelanggan=tabel_pelanggan, tabel_mesincuci=tabel_mesincuci)
         else:
             error = "Nama Mesin Cuci tidak valid."
-            return render_template('add_transaksi.html', error=error)
+            return render_template('add_transaksi.html', error=error, tabel_pelanggan=tabel_pelanggan, tabel_mesincuci=tabel_mesincuci)
 
-    return render_template('add_transaksi.html',tabel_pelanggan=tabel_pelanggan)
+    return render_template('add_transaksi.html', tabel_pelanggan=tabel_pelanggan, tabel_mesincuci=tabel_mesincuci)
 
 @app.route('/update_customer', methods=['GET', 'POST'])
 def update_customer():

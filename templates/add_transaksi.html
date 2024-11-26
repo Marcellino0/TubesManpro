@@ -40,6 +40,7 @@
 
         .form-group {
             margin-bottom: 1.5rem;
+            position: relative;
         }
 
         label {
@@ -49,7 +50,7 @@
             font-weight: 500;
         }
 
-        input {
+        input, select {
             width: 100%;
             padding: 0.75rem;
             border: 2px solid #E8EAED;
@@ -58,13 +59,13 @@
             transition: all 0.3s ease;
         }
 
-        input:focus {
+        input:focus, select:focus {
             outline: none;
             border-color: #1A73E8;
             box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2);
         }
 
-        input::placeholder {
+        input::placeholder, select::placeholder {
             color: #9AA0A6;
         }
 
@@ -111,29 +112,6 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-        th, td {
-            padding: 12px;
-            text-align: left;
-        }
-        th {
-            background-color: #1A73E8;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-
-        /* Dropdown styles */
         .dropdown-list {
             display: none;
             position: absolute;
@@ -161,52 +139,6 @@
 
         .dropdown-item:hover {
             background-color: #F1F3F4;
-        }
-
-        .customer-details {
-            margin-top: 1rem;
-            padding: 1rem;
-            background-color: #F8F9FA;
-            border-radius: 8px;
-            display: none;
-        }
-
-        .customer-details.show {
-            display: block;
-        }
-
-        .details-row {
-            display: grid;
-            grid-template-columns: 120px 1fr;
-            gap: 1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .details-label {
-            color: #5F6368;
-            font-weight: 500;
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 1rem;
-            }
-            
-            .container {
-                padding: 1.5rem;
-            }
-
-            h1 {
-                font-size: 1.5rem;
-            }
-            .lists-container {
-                flex-direction: column;
-            }
-
-            .list {
-                width: 100%;
-                margin-bottom: 1rem;
-            }
         }
     </style>
 </head>
@@ -242,32 +174,12 @@
         </table> -->
 
         <form method="POST">
-
             <div class="form-group">
-                <label for="NamaPelanggan">Nama Pelanggan:</label>
-                <input type="text" id="NamaPelanggan" name="NamaPelanggan" required>
+                <label for="NamaPelanggan">Nama Pelanggan</label>
+                <input type="text" id="NamaPelanggan" name="NamaPelanggan" required autocomplete="off">
                 <div class="dropdown-list" id="customerDropdown"></div>
             </div>
-
-            <div class="customer-details" id="customerDetails">
-                <div class="details-row">
-                    <span class="details-label">No. Telepon:</span>
-                    <span class="details-value" id="phoneDetails"></span>
-                </div>
-                <div class="details-row">
-                    <span class="details-label">Email:</span>
-                    <span class="details-value" id="emailDetails"></span>
-                </div>
-                <div class="details-row">
-                    <span class="details-label">Alamat:</span>
-                    <span class="details-value" id="addressDetails"></span>
-                </div>
-                <div class="details-row">
-                    <span class="details-label">Kelurahan:</span>
-                    <span class="details-value" id="kelurahanDetails"></span>
-                </div>
-            </div>
-
+            
             <div class="form-group">
                 <label for="Tanggal">Tanggal:</label>
                 <input type="date" id="Tanggal" name="Tanggal" required>
@@ -285,8 +197,17 @@
 
             <div class="form-group">
                 <label for="NamaMesinCuci">Nama Mesin Cuci:</label>
-                <input type="text" id="NamaMesinCuci" name="NamaMesinCuci" required>
+                <select id="NamaMesinCuci" name="NamaMesinCuci" required>
+                    <option value="">Pilih Mesin Cuci</option>
+                    {% for mesin in tabel_mesincuci %}
+                        {% if mesin[1] == "Available" %}
+                            <option value="{{ mesin[0] }}">{{ mesin[0] }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
             </div>
+
+            
 
             <div class="button-group">
                 <a href="{{ url_for('dashboard') }}" class="back-button">Back</a>
@@ -294,28 +215,18 @@
             </div>
         </form>
     </div>
-
     <script>
         // Customer data from Flask template
         const customers = [
             {% for pelanggan in tabel_pelanggan %}
             {
-                name: "{{ pelanggan[0] }}",
+                name: "{{ pelanggan[0] }}"
             },
             {% endfor %}
         ];
 
         const input = document.getElementById('NamaPelanggan');
         const dropdown = document.getElementById('customerDropdown');
-        const customerDetails = document.getElementById('customerDetails');
-
-        function updateCustomerDetails(customer) {
-            document.getElementById('phoneDetails').textContent = customer.phone;
-            document.getElementById('emailDetails').textContent = customer.email;
-            document.getElementById('addressDetails').textContent = customer.address;
-            document.getElementById('kelurahanDetails').textContent = customer.kelurahan;
-            customerDetails.classList.add('show');
-        }
 
         function filterCustomers(searchTerm) {
             return customers.filter(customer => 
@@ -332,7 +243,6 @@
                 div.addEventListener('click', () => {
                     input.value = customer.name;
                     dropdown.classList.remove('show');
-                    updateCustomerDetails(customer);
                 });
                 dropdown.appendChild(div);
             });
@@ -346,7 +256,6 @@
                 showDropdown(filteredCustomers);
             } else {
                 dropdown.classList.remove('show');
-                customerDetails.classList.remove('show');
             }
         });
 
@@ -356,6 +265,5 @@
             }
         });
     </script>
-
 </body>
 </html>
