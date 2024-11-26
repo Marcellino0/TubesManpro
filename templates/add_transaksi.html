@@ -145,6 +145,14 @@
             h1 {
                 font-size: 1.5rem;
             }
+            .lists-container {
+                flex-direction: column;
+            }
+
+            .list {
+                width: 100%;
+                margin-bottom: 1rem;
+            }
         }
     </style>
 </head>
@@ -155,7 +163,7 @@
             <div class="error-message">{{ error }}</div>
         {% endif %}
 
-        <table>
+        <!-- <table>
             <tr>
                 <th>Nama Pelanggan</th>
             </tr>
@@ -164,9 +172,9 @@
                 <td>{{ pelanggan[0] }}</td>
             </tr>
             {% endfor %}
-        </table>
+        </table> -->
 
-        <table>
+        <!-- <table>
             <tr>
                 <th>Nama Mesin Cuci</th>
                 <th>Status</th>
@@ -177,7 +185,7 @@
                 <td>{{ mesin[1] }}</td>
             </tr>
             {% endfor %}
-        </table>
+        </table> -->
 
         <form method="POST">
             <div class="form-group">
